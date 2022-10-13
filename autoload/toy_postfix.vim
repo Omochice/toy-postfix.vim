@@ -17,7 +17,7 @@ function! toy_postfix#expand() abort
 
   let l:current_line = line('.')
   let l:line = getline(l:current_line)
-  let l:matches = matchlist(l:line, l:rule.regex)
+  let l:matches = l:line->matchlist(l:rule.regex)
   let l:out = l:rule.template
   for l:idx in range(l:matches->len())
     let l:out = l:out->substitute('{{__$' .. string(l:idx) .. '__}}', l:matches[l:idx], 'g')
@@ -29,10 +29,11 @@ function! toy_postfix#expand() abort
   let l:curpos = getcursorcharpos()
   let l:cursor_marker = '{{__cursor__}}'
   for l:idx in range(l:out->len())
-    if l:out[l:idx] =~# l:cursor_marker
+    let l:row = l:out[idx]
+    if l:row =~# l:cursor_marker
       let l:curpos[1] += l:idx
-      let l:curpos[2] = matchstrpos(l:out[l:idx], l:cursor_marker)[1]
-      let l:out[l:idx] = l:out[l:idx]->substitute(l:cursor_marker, '', '')
+      let l:curpos[2] = l:row->matchstrpos(l:cursor_marker)[1]
+      let l:out[l:idx] = l:row->substitute(l:cursor_marker, '', '')
       break
     endif
   endfor
