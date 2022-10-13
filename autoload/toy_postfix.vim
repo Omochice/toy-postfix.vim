@@ -38,7 +38,7 @@ function! toy_postfix#expand() abort
     endif
   endfor
   silent! normal! "_dd
-  call setline(l:current_line, l:out)
+  call append(l:current_line-1, l:out)
   " NOTE: add col+1 because of between position of insert and normal one
   call setcursorcharpos(l:curpos[1], l:curpos[2]+1)
 endfunction
