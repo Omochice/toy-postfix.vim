@@ -3,15 +3,15 @@
 
 CONTENTS					*toy-postfix-contents*
 
-Usase						|toy-postfix-usase|
+Introduction					|toy-postfix-introduction|
 Setting file format				|toy-postfix-rule-format|
 Variables					|toy-postfix-variables|
 Functions					|toy-postfix-functions|
 
 ==============================================================================
-USASE						*toy-postfix-usase*
+INTRODUCTIOn					*toy-postfix-introduction*
 
-This plugin provide 'postfix completion' feature.
+This plugin provides 'postfix completion' feature.
 
 For using, need below:
 
@@ -23,6 +23,7 @@ For using, need below:
 
 ==============================================================================
 RULE FORMAT					*toy-postfix-rule-format*
+						*toy-postfix-usage*
 
 To perfome this plugin, need to write setting file.
 Setting file is format as TOML.
