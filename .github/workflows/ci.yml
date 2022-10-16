@@ -12,6 +12,7 @@ on:
 jobs:
   themis:
     strategy:
+      fail-fast: false
       matrix:
         neovim: [false, true]
         version: ["nightly", "stable"]
