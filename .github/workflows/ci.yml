@@ -1,0 +1,37 @@
+name: vim-themis
+
+on:
+  push:
+    branches:
+      - main
+    pull_request:
+      path-ignore:
+        - "README.md"
+        - "doc/toy_postfix.txt"
+
+jobs:
+  themis:
+    strategy:
+      matrix:
+        neovim: [false, true]
+        version: ["nightly", "stable"]
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: checkout vim-themis
+        uses: actions/checkout@v3
+        with:
+          repository: thinca/vim-themis
+          path: vim-themis
+      - name: setup vim
+        id: vim
+        uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: ${{ matrix.neovim }}
+          version: ${{ matrix.version }}
+      - name: Run test with vim-themis
+        env:
+          THEMIS_VIM: ${{ steps.vim.outputs.executable }}
+        run: |
+          ./vim-themis/bin/themis -r ./test
