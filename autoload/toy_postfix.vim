@@ -82,27 +82,29 @@ function! s:load_rule(filetype) abort
 
   " NOTE: if filetype has chain like typescript => javascript, load it too
   let l:extends = get(g:, 'toy_postfix#extends', {})->get(a:filetype, '')
-  if l:extends
+  if l:extends->empty()
     return
   endif
+
+  let l:RULE_KEY = 'rules'
+  let l:extend_rule = s:rules->get(a:filetype, {})->get(l:RULE_KEY, [])
 
   if l:extends->type() ==# v:t_string
     " NOTE: like 'javascript'
     let l:loaded = s:load_toml_by_filetype(l:extends)
-    let s:rules[a:filetype] = extend(
-          \ get(s:rules, a:filetype, {})->deepcopy(),
-          \ l:loaded->deepcopy()
+    let l:extend_rule = l:extend_rule->extend(
+          \ l:loaded->get(l:RULE_KEY, [])
           \ )
   elseif l:extends->type() ==# v:t_list
     " NOTE: like ['javascript', 'typescript']
     for l:f in l:extends
       let l:loaded = s:load_toml_by_filetype(l:f)
-      let s:rules[a:filetype] = extend(
-            \ get(s:rules, a:filetype, {})->deepcopy(),
-            \ l:loaded->deepcopy()
+      let l:extend_rule = l:extend_rule->extend(
+            \ l:loaded->get(l:RULE_KEY, [])
             \ )
     endfor
   endif
+  let s:rules[a:filetype] = { l:RULE_KEY: l:extend_rule->deepcopy() }
 endfunction
 
 function! s:load_toml_by_filetype(filetype) abort
