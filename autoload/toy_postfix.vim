@@ -5,6 +5,8 @@ let s:TOML = vital#toy_postfix#import('Text.TOML')
 
 let s:rules = {}
 
+let s:cache = {}
+
 function! s:filetype() abort
   return &filetype
 endfunction
@@ -57,8 +59,18 @@ function! s:get_rule() abort
 
   let l:line = getline('.')
 
+  " NOTE: If call this with same context, use cache.
+  " This makes fast to execute like `expandable() ? expand() : other` mapping
+  if (!(s:cache->empty())
+        \ && s:cache->get('filetype') ==# l:filetype
+        \ && s:cache->get('context') ==# l:line
+        \ )
+    return s:cache->get('rule')
+  endif
+
   for l:rule in s:rules->get(l:filetype, {})->get('rules', [])
     if l:line =~# l:rule.regex
+      let s:cache = { 'filetype': l:filetype, 'context': l:line, 'rule': l:rule->copy()}
       return l:rule
     endif
   endfor
