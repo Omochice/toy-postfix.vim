@@ -65,7 +65,7 @@ function! s:suite.__expand__() abort
           \ '  ',
           \ 'endif'
           \ ]
-    call assert_equal(l:expected, getline(1, '3'))
+    call assert_equal(l:expected, getline(1, 3))
   endfunction
 
   let l:expand_insert = themis#suite('If current line match rule, should be replaced (on insert mode)')
@@ -81,7 +81,7 @@ function! s:suite.__expand__() abort
           \ '  ',
           \ 'endif'
           \ ]
-    call assert_equal(l:expected, getline(1, '3'))
+    call assert_equal(l:expected, getline(1, 3))
   endfunction
 
   let l:expand_curpos_normal = themis#suite('If rule template include "{{__cursor__}}", cursor should be moved at there (on normal mode)')
@@ -138,7 +138,33 @@ function! s:suite.__expand__() abort
     let l:expected = 'console.log(true)'
     call assert_equal(l:expected, getline(1))
   endfunction
+
+  let l:part_of = themis#suite('If match with part of current line, should replace part of it.')
+  function! l:part_of.test() abort
+    set filetype=vim
+    call setline(1, 'let v:true.if')
+    call cursor([1, 13])
+    call toy_postfix#expand()
+    let l:expected = [
+          \ 'let if v:true',
+          \ '  ',
+          \ 'endif'
+          \ ]
+    call assert_equal(l:expected, getline(1, 3))
+  endfunction
+
+  let l:indent_case = themis#suite('If current line has some indents, should keep it.')
+  function! l:indent_case.test() abort
+    set filetype=vim
+    call setline(1, '  v:true.if')
+    call cursor([1, 8])
+    call toy_postfix#expand()
+    let l:expected = [
+          \ '  if v:true',
+          \ '    ',
+          \ '  endif'
+          \ ]
+    call assert_equal(l:expected, getline(1, 3))
+  endfunction
 endfunction
-
-
 
