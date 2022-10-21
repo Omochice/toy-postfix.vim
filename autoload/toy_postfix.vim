@@ -22,11 +22,14 @@ function! toy_postfix#expand() abort
   let l:matches = l:line->matchlist(l:rule.regex)
   let l:out = l:rule.template
   for l:idx in range(l:matches->len())
-    let l:out = l:out->substitute('{{__$' .. string(l:idx) .. '__}}', l:matches[l:idx], 'g')
+    let l:placeholder = '{{__$' .. string(l:idx) .. '__}}'
+    let l:out = l:out->substitute(l:placeholder, l:matches[l:idx], 'g')
   endfor
+  let l:out = l:out->split('\n')
 
   let l:indent = l:line->matchstr('\s*')
-  let l:out = l:out->split('\n')->copy()->map({_, val -> l:indent .. v:val})
+  let l:out =  l:out->map({_, val -> l:indent .. v:val})
+  let l:out[0] = l:line->substitute(l:rule.regex, '', '') .. l:out[0]->substitute('\s*', '', '')
 
   let l:curpos = getcursorcharpos()
   let l:cursor_marker = '{{__cursor__}}'
