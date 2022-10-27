@@ -33,9 +33,11 @@ function! toy_postfix#expand() abort
 
   let l:curpos = getcursorcharpos()
   let l:cursor_marker = '{{__cursor__}}'
+  let l:is_include_cursor_marker = v:false
   for l:idx in range(l:out->len())
     let l:row = l:out[idx]
     if l:row =~# l:cursor_marker
+      let l:is_include_cursor_marker = v:true
       let l:curpos[1] += l:idx
       let l:curpos[2] = l:row->matchstrpos(l:cursor_marker)[1]
       let l:out[l:idx] = l:row->substitute(l:cursor_marker, '', '')
@@ -45,7 +47,7 @@ function! toy_postfix#expand() abort
   silent! normal! "_dd
   call append(l:current_line-1, l:out)
   " NOTE: add col+1 because of between position of insert and normal one
-  call setcursorcharpos(l:curpos[1], l:curpos[2]+1)
+  call setcursorcharpos(l:curpos[1], l:curpos[2]+l:is_include_cursor_marker)
 endfunction
 
 function! toy_postfix#expandable() abort
