@@ -48,7 +48,8 @@ function! toy_postfix#expand() abort
   silent! normal! "_dd
   call append(l:current_line-1, l:out)
   " NOTE: add col+1 because of between position of insert and normal one
-  call setcursorcharpos(l:curpos[1], l:curpos[2]+l:is_include_cursor_marker)
+  " TODO: use `setcursorcharpos` instead if it is enable in stable vim version
+  call cursor(l:curpos[1], l:curpos[2]+l:is_include_cursor_marker)
 endfunction
 
 function! toy_postfix#expandable() abort
