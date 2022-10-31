@@ -1,3 +1,5 @@
+[![vim-themis](https://github.com/Omochice/toy-postfix.vim/actions/workflows/ci.yml/badge.svg)](https://github.com/Omochice/toy-postfix.vim/actions/workflows/ci.yml)
+
 # toy-postfix.vim
 
 This plugin provides 'postfix completion' feature.
@@ -37,7 +39,7 @@ Rule format is like below:
 regex = "\(\S\+\)\.if"
 template = """
 if {{__$1__}}
-{{__cursor__}}
+  {{__cursor__}}
 endif
 """
 ```
