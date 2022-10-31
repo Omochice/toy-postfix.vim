@@ -31,7 +31,8 @@ function! toy_postfix#expand() abort
   let l:out =  l:out->map({_, val -> l:indent .. v:val})
   let l:out[0] = l:line->substitute(l:rule.regex, '', '') .. l:out[0]->substitute('\s*', '', '')
 
-  let l:curpos = getcursorcharpos()
+  " TODO: use `getcursorcharpos` instead if it is enable on stable vim version
+  let l:curpos = getcurpos()
   let l:cursor_marker = '{{__cursor__}}'
   let l:is_include_cursor_marker = v:false
   for l:idx in range(l:out->len())
