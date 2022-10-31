@@ -58,7 +58,7 @@ function! s:suite.__expand__() abort
   function! l:expand_normal.test() abort
     set filetype=vim
     call setline(1, 'v:true.if')
-    call cursor([1, 10])
+    normal! $
     call toy_postfix#expand()
     let l:expected = [
           \ 'if v:true',
@@ -73,7 +73,7 @@ function! s:suite.__expand__() abort
     enew!
     set filetype=vim
     call setline(1, 'v:true.if')
-    call cursor([1, 10])
+    normal! $
     execute 'startinsert!'
     call toy_postfix#expand()
     let l:expected = [
@@ -88,7 +88,7 @@ function! s:suite.__expand__() abort
   function! l:expand_curpos_normal.test() abort
     set filetype=vim
     call setline(1, 'v:true.if')
-    call cursor([1, 10])
+    normal! $
     call toy_postfix#expand()
     call assert_equal([2, 3], getpos('.')[1:2])
   endfunction
@@ -98,7 +98,7 @@ function! s:suite.__expand__() abort
     enew!
     set filetype=vim
     call setline(1, 'v:true.if')
-    call cursor([1, 10])
+    normal! $
     execute 'startinsert!'
     call toy_postfix#expand()
     call assert_equal([2, 3], getpos('.')[1:2])
@@ -108,7 +108,7 @@ function! s:suite.__expand__() abort
   function! l:unexpand_other_filetype.test() abort
     set filetype=text
     call setline(1, 'v:true.if')
-    call cursor([1, 10])
+    normal! $
     call toy_postfix#expand()
     call assert_equal('v:true.if', getline(1))
   endfunction
@@ -118,7 +118,7 @@ function! s:suite.__expand__() abort
     let g:toy_postfix#extends = { 'typescript': 'javascript' }
     set filetype=typescript
     call setline(1, 'true.if')
-    call cursor([1, 8])
+    normal! $
     call toy_postfix#expand()
     let l:expected = [
           \ 'if (true) {',
@@ -133,7 +133,7 @@ function! s:suite.__expand__() abort
     let g:toy_postfix#extends = { 'vue': ['typescript', 'javascript'] }
     set filetype=vue
     call setline(1, 'true.echo')
-    call cursor([1, 8])
+    normal! $
     call toy_postfix#expand()
     let l:expected = 'console.log(true)'
     call assert_equal(l:expected, getline(1))
@@ -143,7 +143,7 @@ function! s:suite.__expand__() abort
   function! l:part_of.test() abort
     set filetype=vim
     call setline(1, 'let v:true.if')
-    call cursor([1, 13])
+    normal! $
     call toy_postfix#expand()
     let l:expected = [
           \ 'let if v:true',
@@ -157,7 +157,7 @@ function! s:suite.__expand__() abort
   function! l:indent_case.test() abort
     set filetype=vim
     call setline(1, '  v:true.if')
-    call cursor([1, 8])
+    normal! $
     call toy_postfix#expand()
     let l:expected = [
           \ '  if v:true',
