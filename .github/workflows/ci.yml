@@ -4,10 +4,8 @@ on:
   push:
     branches:
       - main
-    pull_request:
-      path-ignore:
-        - "README.md"
-        - "doc/toy_postfix.txt"
+    paths-ignore:
+      - "!**/*.vim"
 
 jobs:
   themis:
@@ -34,5 +32,70 @@ jobs:
       - name: Run test with vim-themis
         env:
           THEMIS_VIM: ${{ steps.vim.outputs.executable }}
+          THEMIS_PROFILE: ${{ github.workspace }}/vim-profile${{ runner.os }}-${{ matrix.vim }}-${{ matrix.type }}.txt
         run: |
-          ./vim-themis/bin/themis -r ./test
+          ${GITHUB_WORKSPACE}/vim-themis/bin/themis --reporter dot
+
+  themis-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: checkout vim-themis
+        uses: actions/checkout@v3
+        with:
+          repository: thinca/vim-themis
+          path: vim-themis
+      - name: setup vim
+        id: vim
+        uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: nightly
+      - name: Run test with vim-themis
+        env:
+          THEMIS_VIM: ${{ steps.vim.outputs.executable }}
+          THEMIS_PROFILE: ${{ github.workspace }}/vim-profile.txt
+        run: |
+          ${GITHUB_WORKSPACE}/vim-themis/bin/themis --reporter dot
+      - name: setup python
+        uses: actions/setup-python@v4.3.0
+        with:
+          python-version: '3.10'
+      - name: collect coverage
+        env:
+          THEMIS_PROFILE: ${{ github.workspace }}/vim-profile.txt
+        run: |
+          pip install covimerage
+          covimerage write_coverage "${THEMIS_PROFILE}"
+          covimerage xml
+      - name: setup golang
+        uses: actions/setup-go@v3
+        with:
+          go-version: ">=1.18.0"
+      - name: setup octocov
+        run: |
+          go install github.com/k1LoW/octocov@latest
+      - name: make covarage badge
+        run: |
+          mkdir docs
+          octocov badge coverage --out docs/badge.svg
+        # 各matrixごとに作る意味はないので
+      - name: upload badge to artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: docs
+
+  deploy:
+    needs: themis-coverage
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
