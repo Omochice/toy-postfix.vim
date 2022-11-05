@@ -1,0 +1,9 @@
+set encoding=utf-8
+
+call themis#option('recursive', v:true)
+call themis#option('exclude', ['autoload/vital/toy_postfix.vim'])
+
+if $THEMIS_PROFILE !=# ''
+  execute 'profile' 'start' $THEMIS_PROFILE
+  profile! file ./autoload/toy_postfix.vim
+endif
