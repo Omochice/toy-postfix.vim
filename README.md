@@ -1,4 +1,5 @@
 [![vim-themis](https://github.com/Omochice/toy-postfix.vim/actions/workflows/ci.yml/badge.svg)](https://github.com/Omochice/toy-postfix.vim/actions/workflows/ci.yml)
+[![coverage](https://omochice.github.io/toy-postfix.vim/badge.svg)](https://github.com/Omochice/toy-postfix.vim/actions/workflows/ci.yml)
 
 # toy-postfix.vim
 
