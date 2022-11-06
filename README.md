@@ -1,5 +1,4 @@
 [![vim-themis](https://github.com/Omochice/toy-postfix.vim/actions/workflows/ci.yml/badge.svg)](https://github.com/Omochice/toy-postfix.vim/actions/workflows/ci.yml)
-[![coverage](https://omochice.github.io/toy-postfix.vim/badge.svg)](https://github.com/Omochice/toy-postfix.vim/actions/workflows/ci.yml)
 
 # toy-postfix.vim
 
@@ -109,3 +108,16 @@ endif
 ## License
 
 [MIT](./LICENSE)
+
+## Coverage
+
+Currently, there are tested on Linux only.
+
+|       |vim|nvim|
+|-------|---|----|
+|stable |[![coverage-vim-stable](https://omochice.github.io/toy-postfix.vim/badge-Linux-vim-stable.svg)](https://github.com/Omochice/toy-postfix.vim/actions/workflows/ci.yml)|[![coverage-nvim-stable](https://omochice.github.io/toy-postfix.vim/badge-Linux-neovim-stable.svg)](https://github.com/Omochice/toy-postfix.vim/actions/workflows/ci.yml)|
+|nightly|[![coverage-vim-nightly](https://omochice.github.io/toy-postfix.vim/badge-Linux-vim-nightly.svg)](https://github.com/Omochice/toy-postfix.vim/actions/workflows/ci.yml)|[![coverage-nvim-nightly](https://omochice.github.io/toy-postfix.vim/badge-Linux-neovim-nightly.svg)](https://github.com/Omochice/toy-postfix.vim/actions/workflows/ci.yml)|
+
+
+
+
