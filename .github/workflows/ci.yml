@@ -41,7 +41,7 @@ jobs:
       - name: setup python
         uses: actions/setup-python@v5.1.1
         with:
-          python-version: '3.10'
+          python-version: '3.13'
       - name: collect coverage
         env:
           THEMIS_PROFILE: ${{ github.workspace }}/vim-profile-${{ runner.os }}-${{ matrix.neovim }}-${{ matrix.version }}.txt
