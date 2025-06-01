@@ -20,15 +20,15 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: checkout vim-themis
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           repository: thinca/vim-themis
           path: vim-themis
       - name: setup vim
         id: vim
-        uses: rhysd/action-setup-vim@v1
+        uses: rhysd/action-setup-vim@8e931b9954b19d4203d5caa5ff5521f3bc21dcc7 # v1.4.2
         with:
           neovim: ${{ matrix.neovim }}
           version: ${{ matrix.version }}
@@ -39,7 +39,7 @@ jobs:
         run: |
           ${GITHUB_WORKSPACE}/vim-themis/bin/themis --reporter dot
       - name: setup python
-        uses: actions/setup-python@v5.6.0
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: '3.13'
       - name: collect coverage
@@ -50,14 +50,14 @@ jobs:
           covimerage write_coverage "${THEMIS_PROFILE}"
           covimerage xml
       - name: install octocov
-        uses: jaxxstorm/action-install-gh-release@v2.1.0
+        uses: jaxxstorm/action-install-gh-release@6096f2a2bbfee498ced520b6922ac2c06e990ed2 # v2.1.0
         with:
           repo: k1LoW/octocov
       - name: make covarage badge
         run: |
           octocov badge coverage --out ${{ github.workspace }}/badge-${{ runner.os }}-$(test "${{ matrix.neovim }}" = "true" && echo "neovim" || echo "vim" )-${{ matrix.version }}.svg
       - name: upload badge to artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           path: badge*.svg
           if-no-files-found: error
@@ -67,12 +67,12 @@ jobs:
     needs: themis
     steps:
       - name: download artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: artifact
           path: docs
       - name: upload badge to artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         with:
           path: docs
 
@@ -88,4 +88,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
