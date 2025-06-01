@@ -31,7 +31,7 @@ function! s:suite.before() abort
 
   let l:typescript_rule = [
         \ '[[rules]]',
-        \ 'regex = "\\(\\S\\+}\)\\.echo"',
+        \ 'regex = "\\(\\S\\+\\)\\.echo"',
         \ 'template = """',
         \ 'console.log({{__$1__}})',
         \ '"""',
