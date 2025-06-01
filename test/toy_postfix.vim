@@ -9,7 +9,7 @@ function! s:suite.before() abort
   call mkdir(s:rule_dir, 'p')
   let l:vim_rules = [
         \ '[[rules]]',
-        \ 'regex = "\(\S\+\)\.if"',
+        \ 'regex = "\\(\\S\\+\\)\\.if"',
         \ 'template = """',
         \ 'if {{__$1__}}',
         \ '  {{__cursor__}}',
@@ -20,7 +20,7 @@ function! s:suite.before() abort
 
   let l:javascript_rule = [
         \ '[[rules]]',
-        \ 'regex = "\(\S\+\)\.if"',
+        \ 'regex = "\\(\\S\\+\\)\\.if"',
         \ 'template = """',
         \ 'if ({{__$1__}}) {',
         \ '  {{__cursor__}}',
@@ -31,7 +31,7 @@ function! s:suite.before() abort
 
   let l:typescript_rule = [
         \ '[[rules]]',
-        \ 'regex = "\(\S\+\)\.echo"',
+        \ 'regex = "\\(\\S\\+\\)\\.echo"',
         \ 'template = """',
         \ 'console.log({{__$1__}})',
         \ '"""',
