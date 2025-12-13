@@ -1,6 +1,15 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: [
-    "github>Omochice/personal-renovate-config",
+    "github>Omochice/personal-renovate-config#v1.11.0",
   ],
+  nix: {
+    enabled: true,
+  },
+  lockFileMaintenance: {
+    enabled: true,
+    extends: [
+      "schedule:weekly",
+    ],
+  },
 }
