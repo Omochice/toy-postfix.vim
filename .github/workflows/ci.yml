@@ -14,7 +14,6 @@ jobs:
       fail-fast: false
       matrix:
         type: ["vim", "neovim"]
-        neovim: [false, true]
         version: ["nightly", "stable"]
     runs-on: ubuntu-latest
     env:
