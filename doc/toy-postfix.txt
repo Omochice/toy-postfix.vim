@@ -79,7 +79,7 @@ VARIABLES					*toy-postfix-variables*
 
 	If you want to use multiple dependencies, write like below:
 	>
-		let g:toy_postfix#rule_dir = { 'vue': ['typescript',
+		let g:toy_postfix#extends = { 'vue': ['typescript',
 		\ 'javascript'] }
 	<
 
