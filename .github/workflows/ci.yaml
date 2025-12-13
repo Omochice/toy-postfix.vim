@@ -10,22 +10,25 @@ on:
 
 jobs:
   themis:
+    timeout-minutes: 5
     strategy:
       fail-fast: false
       matrix:
         type: ["vim", "neovim"]
         version: ["nightly", "stable"]
+    permissions: {}
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: checkout
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
       - name: checkout vim-themis
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           repository: thinca/vim-themis
           path: vim-themis
+          persist-credentials: false
       - name: setup vim
         id: vim
         uses: rhysd/action-setup-vim@19e3dd31a84dbc2c5445d65e9b363f616cab96c1 # v1.6.0
@@ -37,7 +40,7 @@ jobs:
           THEMIS_VIM: ${{ steps.vim.outputs.executable }}
           THEMIS_PROFILE: ${{ github.workspace }}/vim-profile-${{ runner.os }}-${{ matrix.type }}-${{ matrix.version }}.txt
         run: |
-          ${GITHUB_WORKSPACE}/vim-themis/bin/themis --reporter dot
+          "${GITHUB_WORKSPACE}"/vim-themis/bin/themis --reporter dot
       - name: setup python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
@@ -64,8 +67,10 @@ jobs:
           if-no-files-found: error
 
   upload-coverage-badge:
+    timeout-minutes: 5
     runs-on: ubuntu-latest
     needs: themis
+    permissions: {}
     steps:
       - name: download artifacts
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
@@ -79,6 +84,7 @@ jobs:
           path: docs
 
   deploy-to-github-pages:
+    timeout-minutes: 5
     runs-on: ubuntu-latest
     needs: upload-coverage-badge
     permissions:
