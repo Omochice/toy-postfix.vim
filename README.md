@@ -1,6 +1,6 @@
-[![vim-themis](https://github.com/Omochice/toy-postfix.vim/actions/workflows/ci.yml/badge.svg)](https://github.com/Omochice/toy-postfix.vim/actions/workflows/ci.yml)
-
 # toy-postfix.vim
+
+[![vim-themis](https://github.com/Omochice/toy-postfix.vim/actions/workflows/ci.yaml/badge.svg)](https://github.com/Omochice/toy-postfix.vim/actions/workflows/ci.yaml)
 
 This plugin provides 'postfix completion' feature.
 
