@@ -36,7 +36,7 @@ Rule format is like below:
 
 ```toml
 [[rules]]
-regex = "\(\S\+\)\.if"
+regex = "\\(\\S\\+\\)\\.if"
 template = """
 if {{__$1__}}
   {{__cursor__}}
