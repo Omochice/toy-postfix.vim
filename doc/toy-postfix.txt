@@ -25,7 +25,7 @@ For using, need below:
 RULE FORMAT					*toy-postfix-rule-format*
 						*toy-postfix-usage*
 
-To perfome this plugin, need to write setting file.
+To perform this plugin, need to write setting file.
 Setting file is format as TOML.
 The files must be into |g:toy_postfix#rule_dir|.
 
