@@ -42,17 +42,13 @@
                 options = [ "fmt" ];
                 includes = [ "*.md" ];
               };
-              tombi = {
-                command = "${pkgs.tombi}/bin/tombi";
-                options = [ "format" ];
-                includes = [ "*.toml" ];
-              };
               # keep-sorted end
             };
             programs = {
               # keep-sorted start block=yes
               keep-sorted.enable = true;
               nixfmt.enable = true;
+              taplo.enable = true;
               toml-sort.enable = true;
               yamlfmt = {
                 enable = true;
