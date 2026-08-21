@@ -10,12 +10,23 @@ on:
 
 jobs:
   themis:
-    timeout-minutes: 5
+    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
-        type: ["vim", "neovim"]
-        version: ["nightly", "stable"]
+        include:
+          - type: neovim
+            version: nightly
+            app: test-neovim-nightly
+          - type: neovim
+            version: stable
+            app: test-neovim
+          - type: vim
+            version: nightly
+            app: test-vim-nightly
+          - type: vim
+            version: stable
+            app: test-vim
     permissions: {}
     runs-on: ubuntu-latest
     steps:
@@ -23,24 +34,13 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-      - name: checkout vim-themis
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: ./.github/actions/setup-nix
         with:
-          repository: thinca/vim-themis
-          path: vim-themis
-          persist-credentials: false
-      - name: setup vim
-        id: vim
-        uses: rhysd/action-setup-vim@19e3dd31a84dbc2c5445d65e9b363f616cab96c1 # v1.6.0
-        with:
-          neovim: ${{ matrix.type == 'neovim' }}
-          version: ${{ matrix.version }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Run test with vim-themis
         env:
-          THEMIS_VIM: ${{ steps.vim.outputs.executable }}
           THEMIS_PROFILE: ${{ github.workspace }}/vim-profile-${{ runner.os }}-${{ matrix.type }}-${{ matrix.version }}.txt
-        run: |
-          "${GITHUB_WORKSPACE}"/vim-themis/bin/themis --reporter dot
+        run: nix run .#${{ matrix.app }}
       - name: setup python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
