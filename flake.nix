@@ -12,6 +12,11 @@
       url = "github:Omochice/nur-packages";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    vim-overlay = {
+      url = "github:kawarimidoll/vim-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
   };
 
   outputs =
@@ -21,6 +26,8 @@
       treefmt-nix,
       flake-utils,
       nur-packages,
+      vim-overlay,
+      neovim-nightly-overlay,
     }:
     flake-utils.lib.eachDefaultSystem (
       system:
@@ -74,6 +81,10 @@
             type = "app";
             program = "${program}/bin/${name}";
           };
+        themisFor = editor: [
+          editor
+          pkgs.vimPlugins.vim-themis
+        ];
         devPackages = rec {
           # keep-sorted start block=yes
           actions = with pkgs; [
@@ -84,12 +95,18 @@
           renovate-config-validator = with pkgs; [
             renovate
           ];
+          themis = with pkgs; [
+            neovim
+            vim
+            vimPlugins.vim-themis
+          ];
           # keep-sorted end
           default = [
             treefmt.config.build.wrapper
           ]
           ++ actions
-          ++ renovate-config-validator;
+          ++ renovate-config-validator
+          ++ themis;
         };
       in
       {
@@ -103,6 +120,18 @@
           check-renovate-config = pkgs.lib.pipe ''
             renovate-config-validator --strict renovate.json5
           '' [ (runAs "check-renovate-config" devPackages.renovate-config-validator) ];
+          test-neovim = pkgs.lib.pipe ''
+            THEMIS_VIM=nvim themis --reporter dot "$@"
+          '' [ (runAs "test-neovim" (themisFor pkgs.neovim)) ];
+          test-neovim-nightly = pkgs.lib.pipe ''
+            THEMIS_VIM=nvim themis --reporter dot "$@"
+          '' [ (runAs "test-neovim-nightly" (themisFor neovim-nightly-overlay.packages.${system}.neovim)) ];
+          test-vim = pkgs.lib.pipe ''
+            THEMIS_VIM=vim themis --reporter dot "$@"
+          '' [ (runAs "test-vim" (themisFor pkgs.vim)) ];
+          test-vim-nightly = pkgs.lib.pipe ''
+            THEMIS_VIM=vim themis --reporter dot "$@"
+          '' [ (runAs "test-vim-nightly" (themisFor vim-overlay.packages.${system}.vim)) ];
         };
         checks = {
           formatting = treefmt.config.build.check self;
